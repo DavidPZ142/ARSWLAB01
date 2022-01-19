@@ -3,6 +3,10 @@
 ### Arquitecturas de Software - ARSW
 ## Ejercicio Introducción al paralelismo - Hilos - Caso BlackListSearch
 
+## Intengrantes
+## David Pérez
+## Nicolas Camacho
+
 
 ### Dependencias:
 ####   Lecturas:
