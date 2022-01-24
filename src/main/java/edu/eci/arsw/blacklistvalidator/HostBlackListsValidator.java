@@ -29,7 +29,7 @@ public class HostBlackListsValidator {
      * @param ipaddress suspicious host's IP address.
      * @return  Blacklists numbers where the given host's IP address was found.
      */
-    public List<Integer> checkHost(String ipaddress){
+    /*public List<Integer> checkHost(String ipaddress){
         
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
         
@@ -60,6 +60,20 @@ public class HostBlackListsValidator {
         LOG.log(Level.INFO, "Checked Black Lists:{0} of {1}", new Object[]{checkedListsCount, skds.getRegisteredServersCount()});
         
         return blackListOcurrences;
+    }*/
+
+
+    public List<Integer> checkHost (String ipadress , int n ){
+        LinkedList<Integer> blackListOcurrences=new LinkedList<>();
+        int ocurrencesCount =0;
+
+        /*Crear el limite seria getService/n con la funcion techo*/
+        /*Crear el hilo*/
+        /*Start al hilo*/
+        return blackListOcurrences;
+
+
+
     }
     
     

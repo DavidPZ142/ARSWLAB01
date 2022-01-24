@@ -23,6 +23,7 @@ public class CountThread extends Thread{
 
         for(int i = inicio ; i<= fin ; i++ ){
 
+
             System.out.println(i);
         }
     }
