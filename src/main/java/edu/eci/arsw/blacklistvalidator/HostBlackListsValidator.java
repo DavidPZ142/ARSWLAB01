@@ -6,10 +6,13 @@
 package edu.eci.arsw.blacklistvalidator;
 
 import edu.eci.arsw.spamkeywordsdatasource.HostBlacklistsDataSourceFacade;
+import edu.eci.arsw.threads.ValidatorThread;
+
 import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *
@@ -63,13 +66,47 @@ public class HostBlackListsValidator {
     }*/
 
 
-    public List<Integer> checkHost (String ipadress , int n ){
+    public List<Integer> checkHost (String ipadress , int n ) throws InterruptedException{
+
         LinkedList<Integer> blackListOcurrences=new LinkedList<>();
         int ocurrencesCount =0;
+        ArrayList<ValidatorThread> listahilos = new ArrayList<ValidatorThread>();
+        HostBlacklistsDataSourceFacade skds=HostBlacklistsDataSourceFacade.getInstance();
+        int checkedListsCount=0;
 
         /*Crear el limite seria getService/n con la funcion techo*/
-        /*Crear el hilo*/
-        /*Start al hilo*/
+        int length = skds.getRegisteredServersCount();
+        int limite = (int) Math.ceil(length/n);
+
+        /*Crear los hilos*/
+        for (int i=1; i<n ; i++){
+            ValidatorThread hilos = new ValidatorThread(i*limite, (i+1)*limite, ipadress);
+            hilos.start();
+            listahilos.add(hilos);
+
+        }
+
+        for (ValidatorThread k:listahilos){
+            k.join();
+        }
+
+        for (ValidatorThread j : listahilos){
+
+            ocurrencesCount = ocurrencesCount + j.getOcurrencias();
+            blackListOcurrences.addAll(j.getBlackListOcurrences());
+        }
+
+
+
+        if (ocurrencesCount>=BLACK_LIST_ALARM_COUNT){
+            skds.reportAsNotTrustworthy(ipadress);
+        }
+        else{
+            skds.reportAsTrustworthy(ipadress);
+        }
+
+        LOG.log(Level.INFO, "Checked Black Lists:{0} of {1}", new Object[]{checkedListsCount, skds.getRegisteredServersCount()});
+
         return blackListOcurrences;
 
 
